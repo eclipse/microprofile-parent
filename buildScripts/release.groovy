@@ -24,6 +24,12 @@ pipeline {
                 sh "mvn -s /opt/public/hipp/homes/genie.microprofile/.m2/settings-deploy-ossrh.xml release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
             }
         }
+        stage("Copy Specs") {
+            steps {
+                sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
+                sh "cp spec/target/generated-docs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
+            }
+        }
     }
     post {
         always {
