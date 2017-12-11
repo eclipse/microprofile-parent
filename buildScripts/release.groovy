@@ -26,8 +26,9 @@ pipeline {
         }
         stage("Copy Specs") {
             steps {
-                sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
+                sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
                 sh "cp -r spec/target/generated-docs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
+                sh "cp -r api/target/apidocs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
             }
         }
     }
