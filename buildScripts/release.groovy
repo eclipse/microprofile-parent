@@ -9,7 +9,7 @@ pipeline {
         string(description: 'The release version', name: 'releaseVersion')
         string(description: 'The SCM tag to apply', name: 'tag')
         choice(choices: 'Draft\nFinal', description: 'Revision Type', name: 'revremark')
-        choice(choices: 'microprofile-rest-client\nmicroprofile-fault-tolerance\nmicroprofile-metrics\nmicroprofile-open-api\nmicroprofile-opentracing\nmicroprofile-config', description: 'Module', name: 'module')
+        choice(choices: 'microprofile-rest-client\nmicroprofile-fault-tolerance\nmicroprofile-metrics\nmicroprofile-open-api\nmicroprofile-opentracing\nmicroprofile-config\nmicroprofile-bom', description: 'Module', name: 'module')
         string(description: 'Branch to use', name: 'branch', defaultValue: 'master')
     }
 
@@ -39,4 +39,3 @@ pipeline {
         }
     }
 }
-
