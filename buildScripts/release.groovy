@@ -1,3 +1,7 @@
+def modules = ['microprofile-bom','microprofile-config','microprofile-fault-tolerance',
+	'microprofile-health','microprofile-jwt-auth','microprofile-metrics',
+	'microprofile-open-api','microprofile-opentracing','microprofile-rest-client']
+def moduleString = modules.join('\n')
 pipeline {
     agent any
     tools {
@@ -9,7 +13,7 @@ pipeline {
         string(description: 'The release version', name: 'releaseVersion')
         string(description: 'The SCM tag to apply', name: 'tag')
         choice(choices: 'Draft\nFinal', description: 'Revision Type', name: 'revremark')
-        choice(choices: 'microprofile-rest-client\nmicroprofile-fault-tolerance\nmicroprofile-metrics\nmicroprofile-open-api\nmicroprofile-opentracing\nmicroprofile-config\nmicroprofile-bom', description: 'Module', name: 'module')
+        choice(choices: moduleString, description: 'Module', name: 'module')
         string(description: 'Branch to use', name: 'branch', defaultValue: 'master')
     }
 
