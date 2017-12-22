@@ -28,8 +28,12 @@ pipeline {
             steps {
                 sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
                 sh "cp -r spec/target/generated-docs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
-                sh "[ -d 'api' ] && mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
-                sh "[ -d 'api' ] && cp -r api/target/apidocs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
+                script {
+                    if (fileExists('api')) {
+                        sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
+                        sh "cp -r api/target/apidocs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
+                    }
+                }
             }
         }
     }
