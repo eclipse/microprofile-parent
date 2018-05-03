@@ -1,4 +1,4 @@
-def modules = ['microprofile-bom','microprofile-config','microprofile-fault-tolerance',
+def modules = ['microprofile','microprofile-bom','microprofile-config','microprofile-fault-tolerance',
 	'microprofile-health','microprofile-jwt-auth','microprofile-metrics',
 	'microprofile-open-api','microprofile-opentracing','microprofile-rest-client']
 def moduleString = modules.join('\n')
