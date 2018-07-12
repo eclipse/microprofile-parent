@@ -33,9 +33,15 @@ pipeline {
                 sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
                 sh "cp -r spec/target/generated-docs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
                 script {
-                    if (fileExists('api')) {
+                    def apidocsDir = null
+                    if (fileExists('api/target/apidocs')) {
+                        apidocsDir = 'api/target/apidocs'
+                    } else if (fileExists('target/apidocs')) {
+                        apidocsDir = 'target/apidocs'
+                    }
+                    if (apidocsDir != null) {
                         sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
-                        sh "cp -r api/target/apidocs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
+                        sh "cp -r ${apidocsDir}/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
                     }
                 }
             }
