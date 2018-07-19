@@ -40,10 +40,8 @@ pipeline {
                         apidocsDir = 'target/apidocs'
                     }
                     if (apidocsDir != null) {
-                        def apidocsDestination = "/home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
-                        sh "mkdir -p ${apidocsDestination}"
-                        sh "rm -rf ${apidocsDestination}/*"
-                        sh "cp -r ${apidocsDir}/* ${apidocsDestination}"
+                        sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
+                        sh "cp -r ${apidocsDir}/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
                     }
                 }
             }
@@ -52,10 +50,6 @@ pipeline {
     post {
         always {
             archive 'spec/target/generated-docs/*'
-            script {
-                currentBuild.displayName = "${params.module} ${params.tag}"
-                // currentBuild.description = "The best description."
-            }
             deleteDir()
         }
     }
