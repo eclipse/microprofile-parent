@@ -1,6 +1,7 @@
 def modules = ['microprofile','microprofile-bom','microprofile-config','microprofile-fault-tolerance',
 	'microprofile-health','microprofile-jwt-auth','microprofile-metrics',
-	'microprofile-open-api','microprofile-opentracing','microprofile-rest-client']
+	'microprofile-open-api','microprofile-opentracing','microprofile-rest-client',
+	'microprofile-reactive-streams', 'microprofile-reactive-messaging']
 def moduleString = modules.join('\n')
 pipeline {
     agent any
