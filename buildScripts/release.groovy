@@ -7,7 +7,7 @@ pipeline {
     agent any
     tools {
         maven 'apache-maven-latest'
-        jdk 'jdk1.8.0-latest'
+        jdk 'adoptopenjdk-hotspot-jdk8-latest'
     }
     parameters {
         string(description: 'The next snapshot version', name: 'snapshotVersion')
