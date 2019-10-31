@@ -26,19 +26,25 @@ pipeline {
         }
         stage("Execute Release") {
             steps {
-                sh "mvn -s /opt/public/hipp/homes/genie.microprofile/.m2/settings-deploy-ossrh.xml release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
+                sh "mvn -s /home/jenkins/.m2/settings.xml release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
             }
         }
         stage("Copy Specs") {
             steps {
-                sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
-                sh "cp -r spec/target/generated-docs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}"
-                script {
-                    if (fileExists('api')) {
-                        sh "mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
-                        sh "cp -r api/target/apidocs/* /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs"
-                    }
-                }
+				sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+					sh '''
+						ssh genie.microprofile@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}
+						scp -r spec/target/generated-docs/* genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}
+					'''
+                	script {
+                    	if (fileExists('api')) {
+							sh '''
+								ssh genie.microprofile@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs
+								scp -r api/target/apidocs/* genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/${params.module}-${params.releaseVersion}/apidocs
+							'''
+                    	}
+                	}
+				}
             }
         }
     }
