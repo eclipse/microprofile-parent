@@ -21,7 +21,7 @@ pipeline {
     stages {
         stage("Checkout") {
             steps {
-                git url: "git@github.com:eclipse/${params.module}.git", branch: params.branch
+                git credentialsId: 'github-bot-ssh', url: "git@github.com:eclipse/${params.module}.git", branch: params.branch
             }
         }
         stage("Execute Release") {
