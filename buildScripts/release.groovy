@@ -34,9 +34,9 @@ pipeline {
                     sh '''
                         git config --global user.email "microprofile-bot@eclipse.org"
                         git config --global user.name "Eclipse MicroProfile bot"
+                        mvn -s /home/jenkins/.m2/settings.xml release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}
                     '''
                 }
-                sh "mvn -s /home/jenkins/.m2/settings.xml release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
             }
         }
         stage("Copy Specs") {
