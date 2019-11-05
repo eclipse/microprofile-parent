@@ -26,6 +26,11 @@ pipeline {
         }
         stage("Execute Release") {
             steps {
+                withCredentials([file(credentialsId: 'secret-subkeys.asc', variable: 'KEYRING')]) {
+                    sh 'gpg --batch --import "${KEYRING}"'
+                    sh 'for fpr in $(gpg --list-keys --with-colons  | awk -F: \'/fpr:/ {print $10}\' | sort -u); do echo -e "5\ny\n" |  gpg --batch --command-fd 0 --expert --edit-key ${fpr} trust; done'
+                }
+
                 sh "mvn -s /home/jenkins/.m2/settings.xml release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
             }
         }
