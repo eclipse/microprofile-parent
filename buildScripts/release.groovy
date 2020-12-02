@@ -16,6 +16,7 @@ pipeline {
         choice(choices: 'Draft\nFinal', description: 'Revision Type', name: 'revremark')
         choice(choices: moduleString, description: 'Module', name: 'module')
         string(description: 'Branch to use', name: 'branch', defaultValue: 'master')
+        string(description: 'A list of the staging repositories to be used for the build', name: 'stagingList', defaultValue: '')
     }
 
     stages {
@@ -35,7 +36,19 @@ pipeline {
                         git config --global user.email "microprofile-bot@eclipse.org"
                         git config --global user.name "Eclipse MicroProfile bot"
                     '''
-                    sh "mvn -s /home/jenkins/.m2/settings.xml release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
+
+                    def settingsXml = '/home/jenkins/.m2/settings.xml'
+
+                    if (params.stagingList != '') {
+                        sh '''
+                            wget https://github.com/xstefank/staging-augmenter/raw/main/staging-augmenter
+                            chmod +x ./staging-augmenter
+                            ./staging-augmenter -r ${params.stagingList} -o /home/jenkins/.m2/output-settings.xml /home/jenkins/.m2/settings.xml
+                        '''
+                        settingsXml = '/home/jenkins/.m2/output-settings.xml -Pmp-staging'
+                    }
+
+                    sh "mvn -s ${settingsXml} release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
                 }
             }
         }
@@ -63,6 +76,7 @@ pipeline {
         always {
             archive 'spec/target/generated-docs/*'
             deleteDir()
+            sh "rm /home/jenkins/.m2/output-settings.xml"
         }
     }
 }
