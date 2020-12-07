@@ -37,18 +37,19 @@ pipeline {
                         git config --global user.name "Eclipse MicroProfile bot"
                     '''
 
-                    def settingsXml = '/home/jenkins/.m2/settings.xml'
+                    script {
+                        def settingsXml = '/home/jenkins/.m2/settings.xml'
 
-                    if (params.stagingList != '') {
-                        sh '''
-                            wget https://github.com/xstefank/staging-augmenter/raw/main/staging-augmenter
-                            chmod +x ./staging-augmenter
-                            ./staging-augmenter -r ${params.stagingList} -o /home/jenkins/.m2/output-settings.xml /home/jenkins/.m2/settings.xml
-                        '''
-                        settingsXml = '/home/jenkins/.m2/output-settings.xml -Pmp-staging'
+                        if (params.stagingList != '') {
+                            sh "wget https://github.com/xstefank/staging-augmenter/raw/main/staging-augmenter-rhel7"
+                            sh "chmod +x ./staging-augmenter-rhel7"
+                            sh "./staging-augmenter-rhel7 -r ${params.stagingList} -o ../output-settings.xml /home/jenkins/.m2/settings.xml"
+
+                            settingsXml = '../output-settings.xml -Pmp-staging'
+                        }
+
+                        sh "mvn -s ${settingsXml} release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
                     }
-
-                    sh "mvn -s ${settingsXml} release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
                 }
             }
         }
@@ -76,7 +77,7 @@ pipeline {
         always {
             archive 'spec/target/generated-docs/*'
             deleteDir()
-            sh "rm /home/jenkins/.m2/output-settings.xml"
+            sh "rm -f ../output-settings.xml"
         }
     }
 }
