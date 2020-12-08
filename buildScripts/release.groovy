@@ -38,17 +38,17 @@ pipeline {
                     '''
 
                     script {
-                        def settingsXml = '/home/jenkins/.m2/settings.xml'
+                        def settings = '-s /home/jenkins/.m2/settings.xml'
 
                         if (params.stagingList != '') {
-                            sh "wget https://github.com/xstefank/staging-augmenter/raw/main/staging-augmenter-rhel7"
-                            sh "chmod +x ./staging-augmenter-rhel7"
-                            sh "./staging-augmenter-rhel7 -r ${params.stagingList} -o ../output-settings.xml /home/jenkins/.m2/settings.xml"
+                            sh "wget https://github.com/eclipse/microprofile-parent/raw/master/buildScripts/staging-augmenter-ubi8"
+                            sh "chmod +x ./staging-augmenter-ubi8"
+                            sh "./staging-augmenter-ubi8 -r ${params.stagingList} -o ../output-settings.xml /home/jenkins/.m2/settings.xml"
 
-                            settingsXml = '../output-settings.xml -Pmp-staging'
+                            settings = '-s ../output-settings.xml -Pmp-staging'
                         }
 
-                        sh "mvn -s ${settingsXml} release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
+                        sh "mvn ${settings} release:prepare release:perform -B -Dtag=${params.tag} -DdevelopmentVersion=${params.snapshotVersion} -DreleaseVersion=${params.releaseVersion} -Drevremark=${params.revremark}"
                     }
                 }
             }
