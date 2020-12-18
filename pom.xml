@@ -18,20 +18,61 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.eclipse.microprofile.parent</groupId>
+    <groupId>org.eclipse.microprofile</groupId>
     <artifactId>microprofile-parent</artifactId>
-    <version>1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
+
     <packaging>pom</packaging>
-    <name>MicroProfile Parent</name>
-    <description>Parent POM for Eclipse MicroProfile</description>
+    <name>MicroProfile Parent POM</name>
     <url>http://microprofile.io</url>
 
     <properties>
+        <!-- Cross plugins settings -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Compiler -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <checkstyle.version>2.17</checkstyle.version>
-        <checkstyle.methodNameFormat>^_?[a-z][a-zA-Z0-9]*$</checkstyle.methodNameFormat>
+
+        <!-- Dependencies - Jakarta -->
+        <version.jakarta.api>8.0.0</version.jakarta.api>
+        <version.jakarta.cdi>2.0.2</version.jakarta.cdi>
+        <version.jakarta.ws-rs>2.1.6</version.jakarta.ws-rs>
+        <version.jakarta.jsonp>1.1.6</version.jakarta.jsonp>
+        <version.jakarta.jsonb>1.0.2</version.jakarta.jsonb>
+        <!-- Dependencies - Test -->
+        <version.testng>6.14.3</version.testng> <!-- aligns with Arquillian TestNG version -->
+        <version.junit>4.13.1</version.junit>
+        <version.hamcrest>1.3</version.hamcrest>
+        <version.arquillian>1.6.0.Final</version.arquillian>
+
+        <!-- Plugins -->
+        <version.microprofile.build-tools>1.0-SNAPSHOT</version.microprofile.build-tools>
+
+        <version.plugin.resources>3.2.0</version.plugin.resources>
+        <version.plugin.jar>3.2.0</version.plugin.jar>
+        <version.plugin.source>3.2.0</version.plugin.source>
+        <version.plugin.javadoc>3.2.0</version.plugin.javadoc>
+
+        <version.plugin.helper>3.2.0</version.plugin.helper>
+        <version.plugin.impsort>1.4.1</version.plugin.impsort>
+        <version.plugin.formatter>2.13.0</version.plugin.formatter>
+        <version.plugin.checkstyle>3.1.1</version.plugin.checkstyle>
+        <version.plugin.rat>0.13</version.plugin.rat>
+        <version.plugin.bnd>5.1.0</version.plugin.bnd>
+        <version.plugin.asciidoctor>2.1.0</version.plugin.asciidoctor>
+        <version.plugin.asciidoctor.pdf>1.5.3</version.plugin.asciidoctor.pdf>
+        <version.plugin.release>2.5.3</version.plugin.release>
+        <version.plugin.gpg>1.6</version.plugin.gpg>
+        <version.plugin.staging>1.6.3</version.plugin.staging>
+
+        <!-- General Properties -->
+        <skipChecks>false</skipChecks>
+        <skipDocs>false</skipDocs>
+
+        <release.arguments/>
+        <release.revision>Draft</release.revision>
     </properties>
 
     <licenses>
@@ -39,7 +80,6 @@
             <name>Apache License, Version 2.0</name>
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
             <distribution>repo</distribution>
-            <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
 
@@ -52,6 +92,16 @@
         <system>GitHub</system>
         <url>https://github.com/eclipse/microprofile-parent/issues</url>
     </issueManagement>
+
+    <developers>
+        <developer>
+            <id>radcortez</id>
+            <name>Roberto Cortez</name>
+            <url>https://radcortez.com</url>
+            <organization>Red Hat Inc.</organization>
+            <organizationUrl>https://redhat.com</organizationUrl>
+        </developer>
+    </developers>
 
     <scm>
         <connection>scm:git:https://github.com/eclipse/microprofile-parent.git</connection>
@@ -77,32 +127,66 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>javax.enterprise</groupId>
-                <artifactId>cdi-api</artifactId>
-                <version>1.2</version>
+                <groupId>jakarta.enterprise</groupId>
+                <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                <version>${version.jakarta.cdi}</version>
                 <scope>provided</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>jakarta.el</groupId>
+                        <artifactId>jakarta.el-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>jakarta.ejb</groupId>
+                        <artifactId>jakarta.ejb-api</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
+
             <dependency>
-                <groupId>javax.ws.rs</groupId>
-                <artifactId>javax.ws.rs-api</artifactId>
-                <version>2.0.1</version>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>${version.jakarta.ws-rs}</version>
                 <scope>provided</scope>
             </dependency>
+
             <dependency>
-                <groupId>javax.annotation</groupId>
-                <artifactId>javax.annotation-api</artifactId>
-                <version>1.2</version>
+                <groupId>jakarta.json</groupId>
+                <artifactId>jakarta.json-api</artifactId>
+                <version>${version.jakarta.jsonp}</version>
                 <scope>provided</scope>
             </dependency>
+
+            <dependency>
+                <groupId>jakarta.json.bind</groupId>
+                <artifactId>jakarta.json.bind-api</artifactId>
+                <version>${version.jakarta.jsonb}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Test Dependencies -->
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>6.9.9</version>
+                <version>${version.testng}</version>
             </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${version.junit}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-all</artifactId>
+                <version>${version.hamcrest}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.1.13.Final</version>
+                <version>${version.arquillian}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -114,168 +198,647 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.3</version>
-                    <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <localCheckout>true</localCheckout>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <arguments>${arguments} -Prelease -Drevremark=${revremark}</arguments>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.eclipse.cbi.maven.plugins</groupId>
-                    <artifactId>eclipse-jarsigner-plugin</artifactId>
-                    <version>1.1.4</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${checkstyle.version}</version>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${version.plugin.resources}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
+                    <version>${version.plugin.jar}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>${version.plugin.source}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.4</version>
+                    <version>${version.plugin.javadoc}</version>
+                    <configuration>
+                        <attach>true</attach>
+                        <doclint>none</doclint>
+                        <doctitle>${project.name}</doctitle>
+                        <windowtitle>${project.name}</windowtitle>
+                        <header><![CDATA[<br>${project.name} v${project.version}]]></header>
+                        <!--suppress UnresolvedMavenProperty - Generated by build-helper-maven-plugin -->
+                        <bottom>
+                            <![CDATA[
+                            Copyright &#169; ${inceptionYear} &#x2013; {currentYear} {organizationName}. All rights reserved.
+                            <br>
+                            Use is subject to <a href="{@docRoot}/licenses/${release.license}.html" target="_top">license terms</a>.
+                        ]]>
+                        </bottom>
+                        <resourcesArtifacts>
+                            <resourcesArtifact>
+                                <groupId>org.eclipse.microprofile</groupId>
+                                <artifactId>microprofile-build-tools</artifactId>
+                                <version>${version.microprofile.build-tools}</version>
+                            </resourcesArtifact>
+                        </resourcesArtifacts>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Quality -->
+                <plugin>
+                    <groupId>org.apache.rat</groupId>
+                    <artifactId>apache-rat-plugin</artifactId>
+                    <version>${version.plugin.rat}</version>
+                    <configuration>
+                        <skip>${skipChecks}</skip>
+                        <consoleOutput>true</consoleOutput>
+                        <includes>
+                            <include>pom.xml</include>
+                            <include>src/**</include>
+                        </includes>
+                        <excludes>
+                            <exclude>src/main/resources/**</exclude>
+                            <exclude>src/main/javadoc/**</exclude>
+                            <exclude>src/main/asciidoc/license*</exclude>
+                            <exclude>**/LICENSE*</exclude>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>rat-check</id>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>net.revelc.code</groupId>
+                    <artifactId>impsort-maven-plugin</artifactId>
+                    <version>${version.plugin.impsort}</version>
+                    <configuration>
+                        <skip>${skipChecks}</skip>
+                        <groups>java.,javax.,org.,com.</groups>
+                        <staticGroups>*</staticGroups>
+                        <removeUnused>true</removeUnused>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>sort-imports</id>
+                            <goals>
+                                <goal>sort</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>net.revelc.code.formatter</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <version>${version.plugin.formatter}</version>
+                    <configuration>
+                        <skip>${skipChecks}</skip>
+                        <configFile>formatter.xml</configFile>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>format</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.eclipse.microprofile</groupId>
+                            <artifactId>microprofile-build-tools</artifactId>
+                            <version>${version.microprofile.build-tools}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${version.plugin.checkstyle}</version>
+                    <configuration>
+                        <skip>${skipChecks}</skip>
+                        <encoding>UTF-8</encoding>
+                        <sourceDirectories>
+                            <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                            <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
+                        </sourceDirectories>
+                        <failOnViolation>false</failOnViolation>
+                        <failsOnError>false</failsOnError>
+                        <linkXRef>true</linkXRef>
+                        <consoleOutput>true</consoleOutput>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <checkstyleRules>
+                            <module name="Checker">
+                                <module name="LineLength">
+                                    <property name="max" value="150"/>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <property name="ignorePattern" value="@version|@see"/>
+                                </module>
+                                <module name="FileLength">
+                                    <property name="max" value="3500"/>
+                                    <property name="fileExtensions" value="java"/>
+                                </module>
+                                <module name="FileTabCharacter"/>
+                                <module name="TreeWalker">
+                                    <module name="ConstantName">
+                                        <property name="format" value="^(([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$"/>
+                                    </module>
+                                    <module name="LocalVariableName"/>
+                                    <module name="MethodName">
+                                        <property name="format" value="^_?[a-z][a-zA-Z0-9]*$"/>
+                                    </module>
+                                    <module name="PackageName"/>
+                                    <module name="LocalFinalVariableName"/>
+                                    <module name="ParameterName"/>
+                                    <module name="StaticVariableName"/>
+
+                                    <module name="TypeName">
+                                        <property name="format" value="^_?[A-Z][a-zA-Z0-9]*$|packageinfo"/>
+                                    </module>
+                                    <module name="AvoidStarImport">
+                                        <property name="excludes"
+                                                  value="java.io,java.net,java.util,javax.enterprise.inject.spi"/>
+                                    </module>
+                                    <module name="IllegalImport"/>
+                                    <module name="RedundantImport"/>
+                                    <module name="UnusedImports"/>
+                                    <module name="MethodLength">
+                                        <property name="max" value="250"/>
+                                    </module>
+                                    <module name="ParameterNumber">
+                                        <property name="max" value="11"/>
+                                    </module>
+                                    <module name="EmptyBlock">
+                                        <property name="option" value="text"/>
+                                    </module>
+                                    <module name="NeedBraces"/>
+                                    <module name="LeftCurly">
+                                        <property name="option" value="EOL"/>
+                                    </module>
+                                    <module name="RightCurly"/>
+                                    <module name="EmptyStatement"/>
+                                    <module name="EqualsHashCode"/>
+                                    <module name="DefaultComesLast"/>
+                                    <module name="MissingSwitchDefault"/>
+                                    <module name="FallThrough"/>
+                                    <module name="MultipleVariableDeclarations"/>
+                                    <module name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck">
+                                        <property name="severity" value="ignore"/>
+                                    </module>
+                                    <module name="HideUtilityClassConstructor"/>
+                                    <module name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck">
+                                        <property name="packageAllowed" value="false"/>
+                                        <property name="protectedAllowed" value="true"/>
+                                        <property name="publicMemberPattern" value="^serialVersionUID"/>
+                                        <property name="severity" value="warning"/>
+                                    </module>
+                                    <module name="UpperEll"/>
+                                </module>
+                            </module>
+                        </checkstyleRules>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>verify-style</id>
+                            <phase>process-test-classes</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Build -->
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-maven-plugin</artifactId>
+                    <version>${version.plugin.bnd}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>bnd-process</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>biz.aQute.bnd</groupId>
+                    <artifactId>bnd-baseline-maven-plugin</artifactId>
+                    <version>${version.plugin.bnd}</version>
+                    <configuration>
+                        <includeDistributionManagement>false</includeDistributionManagement>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>baseline</id>
+                            <goals>
+                                <goal>baseline</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+
+                <!-- Docs -->
+                <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>${version.plugin.asciidoctor}</version>
+                    <configuration>
+                        <sourceDocumentName>${project.artifactId}.asciidoc</sourceDocumentName>
+                        <attributes>
+                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <revnumber>${project.version}</revnumber>
+                            <revremark>${release.revision}</revremark>
+                            <!--suppress UnresolvedMavenProperty - Generated by build-helper-maven-plugin -->
+                            <revdate>${release.timestamp}</revdate>
+                        </attributes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>generate-pdf</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>process-asciidoc</goal>
+                            </goals>
+                            <configuration>
+                                <outputFile>${project.build.directory}/generated-docs/${project.build.finalName}.pdf</outputFile>
+                                <backend>pdf</backend>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>generate-html</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>process-asciidoc</goal>
+                            </goals>
+                            <configuration>
+                                <outputFile>${project.build.directory}/generated-docs/${project.build.finalName}.html</outputFile>
+                                <backend>html5</backend>
+                            </configuration>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.asciidoctor</groupId>
+                            <artifactId>asciidoctorj-pdf</artifactId>
+                            <version>${version.plugin.asciidoctor.pdf}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+
+                <!-- Release -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${version.plugin.release}</version>
+                    <configuration>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <tagNameFormat>@{project}</tagNameFormat>
+                        <preparationGoals>verify</preparationGoals>
+                        <localCheckout>true</localCheckout>
+                        <arguments>${release.arguments} -Prelease -Drelease.revision=${release.revision}</arguments>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${version.plugin.helper}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>${version.plugin.gpg}</version>
+                    <configuration>
+                        <gpgArguments>
+                            <arg>--pinentry-mode</arg>
+                            <arg>loopback</arg>
+                        </gpgArguments>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
+
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>verify-style</id>
-                        <phase>process-classes</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <failsOnError>true</failsOnError>
-                    <linkXRef>true</linkXRef>
-                    <logViolationsToConsole>true</logViolationsToConsole>
-                    <checkstyleRules>
-                        <module name="Checker">
-                            <module name="SuppressionCommentFilter" />
-                            <module name="FileLength">
-                                <property name="max" value="3500" />
-                                <property name="fileExtensions" value="java" />
-                            </module>
-                            <module name="FileTabCharacter" />
-                            <module name="TreeWalker">
-                                <module name="FileContentsHolder" />
-                                <module name="ConstantName">
-                                    <property name="format" value="^(([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$" />
-                                </module>
-                                <module name="LocalVariableName" />
-                                <module name="MethodName">
-                                    <property name="format" value="${checkstyle.methodNameFormat}" />
-                                </module>
-                                <module name="PackageName" />
-                                <module name="LocalFinalVariableName" />
-                                <module name="ParameterName" />
-                                <module name="StaticVariableName" />
-
-                                <module name="TypeName">
-                                    <property name="format" value="^_?[A-Z][a-zA-Z0-9]*$|packageinfo" />
-                                </module>
-                                <module name="AvoidStarImport">
-                                    <property name="excludes" value="java.io,java.net,java.util,javax.enterprise.inject.spi,javax.enterprise.context" />
-                                </module>
-                                <module name="IllegalImport" />
-                                <module name="RedundantImport" />
-                                <module name="UnusedImports" />
-                                <module name="LineLength">
-                                    <property name="max" value="150" />
-                                    <property name="ignorePattern" value="@version|@see" />
-                                </module>
-                                <module name="MethodLength">
-                                    <property name="max" value="250" />
-                                </module>
-                                <module name="ParameterNumber">
-                                    <property name="max" value="11" />
-                                </module>
-                                <module name="EmptyBlock">
-                                    <property name="option" value="text" />
-                                </module>
-                                <module name="NeedBraces" />
-                                <module name="LeftCurly">
-                                    <property name="option" value="EOL" />
-                                </module>
-                                <module name="RightCurly">
-                                    <property name="option" value="ALONE" />
-                                </module>
-                                <module name="EmptyStatement" />
-                                <module name="EqualsHashCode" />
-                                <module name="DefaultComesLast" />
-                                <module name="MissingSwitchDefault" />
-                                <module name="FallThrough" />
-                                <module name="MultipleVariableDeclarations" />
-                                <module name="com.puppycrawl.tools.checkstyle.checks.design.DesignForExtensionCheck">
-                                    <property name="severity" value="ignore" />
-                                </module>
-                                <module name="HideUtilityClassConstructor" />
-                                <module name="com.puppycrawl.tools.checkstyle.checks.design.VisibilityModifierCheck">
-                                    <property name="packageAllowed" value="false" />
-                                    <property name="protectedAllowed" value="true" />
-                                    <property name="publicMemberPattern" value="^serialVersionUID" />
-                                    <property name="severity" value="warning" />
-                                </module>
-                                <module name="UpperEll" />
-                            </module>
-                        </module>
-                    </checkstyleRules>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.rat</groupId>
-                <artifactId>apache-rat-plugin</artifactId>
-                <version>0.12</version>
-                <executions>
-                    <execution>
-                        <id>rat-check</id>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>bnd.bnd</exclude>
-                        <exclude>*.log</exclude>
-                        <exclude>.checkstyle</exclude>
-                        <exclude>.factorypath</exclude>
-                        <exclude>.editorconfig</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
 
         </plugins>
     </build>
+
     <profiles>
+        <profile>
+            <id>quality-checks</id>
+            <activation>
+                <property>
+                    <name>skipChecks</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.rat</groupId>
+                        <artifactId>apache-rat-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>net.revelc.code.formatter</groupId>
+                        <artifactId>formatter-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>net.revelc.code</groupId>
+                        <artifactId>impsort-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-checkstyle-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>bnd</id>
+            <activation>
+                <file>
+                    <exists>bnd.bnd</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>biz.aQute.bnd</groupId>
+                        <artifactId>bnd-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <archive>
+                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                            </archive>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>biz.aQute.bnd</groupId>
+                        <artifactId>bnd-baseline-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>javadocs</id>
+            <activation>
+                <property>
+                    <name>skipDocs</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>timestamp-property</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>timestamp-property</goal>
+                                </goals>
+                                <configuration>
+                                    <locale>en,US</locale>
+                                    <name>currentYear</name>
+                                    <pattern>yyyy</pattern>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>bsh-property</id>
+                                <goals>
+                                    <goal>bsh-property</goal>
+                                </goals>
+                                <configuration>
+                                    <properties>
+                                        <property>release.license</property>
+                                    </properties>
+                                    <source>
+                                        if (session.getUserProperties().getProperty("release.revision", project.getProperties().getProperty("release.revision")).equals("Final"))
+                                        release.license = "efsl-1.0";
+                                        else
+                                        release.license = "al-2.0";
+                                    </source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>asciidoc</id>
+            <activation>
+                <file>
+                    <exists>src/main/asciidoc</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-timestamp</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>timestamp-property</goal>
+                                </goals>
+                                <configuration>
+                                    <locale>en,US</locale>
+                                    <name>release.timestamp</name>
+                                    <pattern>MMMM dd, yyyy</pattern>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>attach-artifacts</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>attach-artifact</goal>
+                                </goals>
+                                <configuration>
+                                    <artifacts>
+                                        <artifact>
+                                            <file>${project.build.directory}/generated-docs/${project.build.finalName}.pdf</file>
+                                            <type>pdf</type>
+                                        </artifact>
+                                        <artifact>
+                                            <file>${project.build.directory}/generated-docs/${project.build.finalName}.html</file>
+                                            <type>html</type>
+                                        </artifact>
+                                    </artifacts>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>copy-readme</id>
+            <activation>
+                <file>
+                    <exists>README.adoc</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-readme</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}</directory>
+                                            <include>README.adoc</include>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>tck-license</id>
+            <activation>
+                <property>
+                    <name>release.revision</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>bsh-property</id>
+                                <goals>
+                                    <goal>bsh-property</goal>
+                                </goals>
+                                <configuration>
+                                    <properties>
+                                        <property>tck.license</property>
+                                    </properties>
+                                    <source>
+                                        if (session.getUserProperties().getProperty("release.revision", project.getProperties().getProperty("release.revision")).equals("Final"))
+                                        tck.license = "eftckl-1.0";
+                                        else
+                                        tck.license = "al-2.0";
+                                    </source>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.eclipse.microprofile</groupId>
+                                            <artifactId>microprofile-build-tools</artifactId>
+                                            <version>${version.microprofile.build-tools}</version>
+                                            <overWrite>true</overWrite>
+                                            <outputDirectory>${project.build.directory}</outputDirectory>
+                                            <includes>licenses/*</includes>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.coderplus.maven.plugins</groupId>
+                        <artifactId>copy-rename-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>copy-file</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <!--suppress UnresolvedMavenProperty - Generated by build-helper-maven-plugin -->
+                                    <sourceFile>${project.build.directory}/licenses/${tck.license}</sourceFile>
+                                    <destinationFile>${project.build.directory}/classes/META-INF/LICENSE</destinationFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>remove-notice</id>
+            <activation>
+                <property>
+                    <name>release.revision</name>
+                    <value>Final</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/NOTICE</exclude>
+                            </excludes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <id>release</id>
             <build>
@@ -294,18 +857,6 @@
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <executions>
                             <execution>
@@ -316,6 +867,17 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${version.plugin.staging}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
