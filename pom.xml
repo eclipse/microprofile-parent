@@ -60,7 +60,7 @@
         <version.plugin.formatter>2.13.0</version.plugin.formatter>
         <version.plugin.checkstyle>3.1.1</version.plugin.checkstyle>
         <version.plugin.rat>0.13</version.plugin.rat>
-        <version.plugin.bnd>5.1.0</version.plugin.bnd>
+        <version.plugin.bnd>5.2.0</version.plugin.bnd>
         <version.plugin.asciidoctor>2.1.0</version.plugin.asciidoctor>
         <version.plugin.asciidoctor.pdf>1.5.3</version.plugin.asciidoctor.pdf>
         <version.plugin.release>2.5.3</version.plugin.release>
@@ -420,11 +420,15 @@
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-maven-plugin</artifactId>
                     <version>${version.plugin.bnd}</version>
+                    <configuration>
+                        <releaseversions>true</releaseversions>
+                    </configuration>
                     <executions>
                         <execution>
                             <goals>
                                 <goal>bnd-process</goal>
                             </goals>
+
                         </execution>
                     </executions>
                 </plugin>
