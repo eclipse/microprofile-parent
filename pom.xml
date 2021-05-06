@@ -451,10 +451,7 @@
                 <plugin>
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-maven-plugin</artifactId>
-                    <version>${version.plugin.bnd}</version>
-                    <configuration>
-                        <releaseversions>true</releaseversions>
-                    </configuration>
+                    <version>${version.plugin.bnd}</version> 
                     <executions>
                         <execution>
                             <goals>
@@ -469,6 +466,7 @@
                     <version>${version.plugin.bnd}</version>
                     <configuration>
                         <includeDistributionManagement>false</includeDistributionManagement>
+                        <releaseversions>true</releaseversions>
                     </configuration>
                     <executions>
                         <execution>
