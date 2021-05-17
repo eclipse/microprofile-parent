@@ -1,4 +1,5 @@
-def modules = ['microprofile','microprofile-bom','microprofile-config','microprofile-context-propagation','microprofile-fault-tolerance',
+def modules = ['microprofile','microprofile-bom', 'microprofile-parent', 'microprofile-config',
+    'microprofile-context-propagation','microprofile-fault-tolerance',
 	'microprofile-health','microprofile-jwt-auth','microprofile-metrics',
 	'microprofile-open-api','microprofile-opentracing','microprofile-rest-client',
 	'microprofile-reactive-streams-operators', 'microprofile-reactive-messaging', 'microprofile-lra', 'microprofile-graphql']
@@ -59,19 +60,21 @@ pipeline {
         }
         stage("Copy Specs") {
             steps {
-                dir("${params.module}") {
-                    sshagent(['projects-storage.eclipse.org-bot-ssh']) {
-                        sh "ssh genie.microprofile@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}"
-                        sh "scp -r spec/target/generated-docs/* genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}"
-                        script {
-                            if (fileExists('api')) {
-                                sh "scp api/target/*.jar genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/"
+                if (!"${params.module}".equals("microprofile-parent")) {
+                    dir("${params.module}") {
+                        sshagent(['projects-storage.eclipse.org-bot-ssh']) {
+                            sh "ssh genie.microprofile@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}"
+                            sh "scp -r spec/target/generated-docs/* genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}"
+                            script {
+                                if (fileExists('api')) {
+                                    sh "scp api/target/*.jar genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/"
 
-                                sh "ssh genie.microprofile@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/apidocs"
-                                sh "scp -r api/target/apidocs/* genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/apidocs"
-                            }
-                            if (fileExists('tck')) {
-                                sh "find tck -name \"*.jar\" | xargs -I{} scp {} genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/"
+                                    sh "ssh genie.microprofile@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/apidocs"
+                                    sh "scp -r api/target/apidocs/* genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/apidocs"
+                                }
+                                if (fileExists('tck')) {
+                                    sh "find tck -name \"*.jar\" | xargs -I{} scp {} genie.microprofile@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/microprofile/staging/${params.module}-${params.releaseVersion}/"
+                                }
                             }
                         }
                     }
@@ -81,9 +84,11 @@ pipeline {
     }
     post {
         always {
-            dir("${params.module}") {
-                archive 'spec/target/generated-docs/*'
-                sh "rm -f ../output-settings.xml"
+            if (!"${params.module}".equals("microprofile-parent")) {
+                dir("${params.module}") {
+                    archive 'spec/target/generated-docs/*'
+                    sh "rm -f ../output-settings.xml"
+                }
             }
             deleteDir()
         }
