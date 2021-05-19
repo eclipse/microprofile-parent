@@ -385,7 +385,7 @@
                                     </module>
                                     <module name="LocalVariableName" />
                                     <module name="MethodName">
-                                        <property name="format" value="^_?[a-z][a-zA-Z0-9]*$" />
+                                        <property name="format" value="^_?[a-z][a-zA-Z0-9_]*$" />
                                     </module>
                                     <module name="PackageName" />
                                     <module name="LocalFinalVariableName" />
