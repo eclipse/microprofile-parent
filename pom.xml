@@ -43,7 +43,7 @@
         <version.jakarta.jsonp>2.0.0</version.jakarta.jsonp>
         <version.jakarta.jsonb>2.0.0</version.jakarta.jsonb>
         <!-- Dependencies - Test -->
-        <version.testng>6.14.3</version.testng> <!-- aligns with Arquillian TestNG version -->
+        <version.testng>7.4.0</version.testng> <!-- aligns with Arquillian TestNG version -->
         <version.junit>4.13.1</version.junit>
         <version.hamcrest>1.3</version.hamcrest>
         <version.arquillian>1.7.0.Alpha9</version.arquillian>
