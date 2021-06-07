@@ -764,6 +764,18 @@
                                 </configuration>
                             </execution>
                             <execution>
+                                <id>generate-year</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>timestamp-property</goal>
+                                </goals>
+                                <configuration>
+                                    <locale>en,US</locale>
+                                    <name>currentYear</name>
+                                    <pattern>yyyy</pattern>
+                                </configuration>
+                            </execution>
+                            <execution>
                                 <id>attach-artifacts</id>
                                 <phase>package</phase>
                                 <goals>
