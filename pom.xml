@@ -36,7 +36,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!-- Dependencies - Jakarta -->
-        <version.jakarta.api>9.0.0</version.jakarta.api>
         <version.jakarta.annotation>2.0.0</version.jakarta.annotation>
         <version.jakarta.cdi>3.0.0</version.jakarta.cdi>
         <version.jakarta.ws-rs>3.0.0</version.jakarta.ws-rs>
