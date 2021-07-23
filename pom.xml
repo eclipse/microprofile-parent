@@ -48,7 +48,7 @@
         <version.arquillian>1.7.0.Alpha9</version.arquillian>
 
         <!-- Plugins -->
-        <version.microprofile.build-tools>1.0</version.microprofile.build-tools>
+        <version.microprofile.build-tools>1.1</version.microprofile.build-tools>
 
         <version.plugin.resources>3.2.0</version.plugin.resources>
         <version.plugin.jar>3.2.0</version.plugin.jar>
@@ -691,7 +691,7 @@
                                     <artifactItems>
                                         <artifactItem>
                                             <groupId>org.eclipse.microprofile</groupId>
-                                            <artifactId>microprofile-build-tools</artifactId>
+                                            <artifactId>build-tools</artifactId>
                                             <version>${version.microprofile.build-tools}</version>
                                             <overWrite>true</overWrite>
                                             <outputDirectory>${project.build.directory}</outputDirectory>
@@ -827,7 +827,7 @@
                                     <artifactItems>
                                         <artifactItem>
                                             <groupId>org.eclipse.microprofile</groupId>
-                                            <artifactId>microprofile-build-tools</artifactId>
+                                            <artifactId>build-tools</artifactId>
                                             <version>${version.microprofile.build-tools}</version>
                                             <overWrite>true</overWrite>
                                             <outputDirectory>${project.build.directory}</outputDirectory>
