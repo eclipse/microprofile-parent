@@ -203,9 +203,7 @@
                 <version>${version.arquillian}</version>
                 <scope>import</scope>
                 <type>pom</type>
-            </dependency>
-
-            
+            </dependency>            
         </dependencies>
     </dependencyManagement>
 
@@ -614,7 +612,6 @@
                                 <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                             </archive>
                         </configuration>
-                        
                     </plugin>
                     <plugin>
                         <groupId>biz.aQute.bnd</groupId>
@@ -911,7 +908,6 @@
         <profile>
             <id>release</id>
             <build>
-
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
