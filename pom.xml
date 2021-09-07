@@ -79,7 +79,7 @@
 
         <!-- Release -->
         <release.arguments />
-        <release.revision>Final</release.revision>
+        <release.revision>Draft</release.revision>
     </properties>
 
     <licenses>
