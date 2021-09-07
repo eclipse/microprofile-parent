@@ -79,7 +79,7 @@
 
         <!-- Release -->
         <release.arguments />
-        <release.revision>Draft</release.revision>
+        <release.revision>Final</release.revision>
     </properties>
 
     <licenses>
@@ -204,6 +204,8 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+
+            
         </dependencies>
     </dependencyManagement>
 
@@ -273,6 +275,7 @@
                             <id>attach-javadocs</id>
                             <goals>
                                 <goal>jar</goal>
+                                <goal>test-jar</goal>
                             </goals>
                         </execution>
                     </executions>
@@ -611,6 +614,7 @@
                                 <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                             </archive>
                         </configuration>
+                        
                     </plugin>
                     <plugin>
                         <groupId>biz.aQute.bnd</groupId>
@@ -637,6 +641,7 @@
                                 <id>attach-sources</id>
                                 <goals>
                                     <goal>jar</goal>
+                                    <goal>test-jar</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -799,6 +804,30 @@
             </build>
         </profile>
 
+        <profile>
+            <id>build test tck jar </id>
+            <activation>
+                <file>
+                    <exists>src/test/java</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <executions>
+                            <execution>   
+                                <goals>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <!-- Add a tck empty marked file, so this is only executed in the TCK module -->
         <profile>
             <id>tck-license</id>
@@ -865,6 +894,15 @@
                                 <exclude>**/NOTICE</exclude>
                             </excludes>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <id>build-jars</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
@@ -873,6 +911,7 @@
         <profile>
             <id>release</id>
             <build>
+
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
