@@ -203,7 +203,7 @@
                 <version>${version.arquillian}</version>
                 <scope>import</scope>
                 <type>pom</type>
-            </dependency>            
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
