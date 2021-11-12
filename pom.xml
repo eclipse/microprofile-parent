@@ -260,13 +260,6 @@
                         <doctitle>${project.name}</doctitle>
                         <windowtitle>${project.name}</windowtitle>
                         <header><![CDATA[<br>${project.name} v${project.version}]]></header>
-                        <bottom>
-                            <![CDATA[
-                            Copyright &#169; ${inceptionYear} &#x2013; {currentYear} {organizationName}. All rights reserved.
-                            <br>
-                            Use is subject to <a href="{@docRoot}/licenses/${spec.license}.html" target="_top">license terms</a>.
-                        ]]>
-                        </bottom>
                     </configuration>
                     <executions>
                         <execution>
@@ -717,6 +710,7 @@
                                     <overwrite>true</overwrite>
                                     <resources>
                                         <resource>
+                                            <include>**/${spec.license}*</include>
                                             <directory>${project.build.directory}/licenses</directory>
                                             <filtering>true</filtering>
                                         </resource>
@@ -728,6 +722,15 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <bottom>
+                                <![CDATA[
+                            Copyright &#169; ${inceptionYear} &#x2013; {currentYear} {organizationName}. All rights reserved.
+                            <br>
+                            Use is subject to <a href="{@docRoot}/licenses/${spec.license}.html" target="_top">license terms</a>.
+                        ]]>
+                            </bottom>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -839,6 +842,30 @@
                         </executions>
                     </plugin>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-licenses</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/apidocs/licenses</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <include>**/${tck.license}*</include>
+                                            <directory>${project.build.directory}/licenses</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <groupId>com.coderplus.maven.plugins</groupId>
                         <artifactId>copy-rename-maven-plugin</artifactId>
                         <version>${version.plugin.copy.rename}</version>
@@ -864,6 +891,19 @@
                             <excludes>
                                 <exclude>**/NOTICE</exclude>
                             </excludes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <configuration>
+                            <bottom>
+                                <![CDATA[
+                            Copyright &#169; ${inceptionYear} &#x2013; {currentYear} {organizationName}. All rights reserved.
+                            <br>
+                            Use is subject to <a href="{@docRoot}/licenses/${tck.license}.html" target="_top">license terms</a>.
+                        ]]>
+                            </bottom>
                         </configuration>
                     </plugin>
                 </plugins>
