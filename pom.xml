@@ -260,15 +260,14 @@
                         <doctitle>${project.name}</doctitle>
                         <windowtitle>${project.name}</windowtitle>
                         <header><![CDATA[<br>${project.name} v${project.version}]]></header>
+                        <bottom>
+                            <![CDATA[
+                            Copyright &#169; ${inceptionYear} &#x2013; {currentYear} {organizationName}. All rights reserved.
+                            <br>
+                            Use is subject to <a href="{@docRoot}/licenses/${spec.license}.html" target="_top">license terms</a>.
+                        ]]>
+                        </bottom>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
 
                 <!-- Quality -->
@@ -470,7 +469,6 @@
                     </executions>
                 </plugin>
 
-
                 <!-- Docs -->
                 <plugin>
                     <groupId>org.asciidoctor</groupId>
@@ -614,6 +612,35 @@
         </profile>
 
         <profile>
+            <id>jar-test</id>
+            <activation>
+                <file>
+                    <exists>src/test/java</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>${version.plugin.jar}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-test-jar</id>
+                                <goals>
+                                    <goal>test-jar</goal>
+                                </goals>
+                                <configuration>
+                                    <skipIfEmpty>true</skipIfEmpty>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>sources</id>
             <activation>
                 <file>
@@ -639,7 +666,32 @@
         </profile>
 
         <profile>
-            <id>javadocs</id>
+            <id>sources-test</id>
+            <activation>
+                <file>
+                    <exists>src/test/java</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources-test</id>
+                                <goals>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>licenses</id>
             <activation>
                 <property>
                     <name>skipDocs</name>
@@ -675,8 +727,8 @@
                         <artifactId>maven-dependency-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>unpack</id>
-                                <phase>prepare-package</phase>
+                                <id>unpack-licenses</id>
+                                <phase>generate-sources</phase>
                                 <goals>
                                     <goal>unpack</goal>
                                 </goals>
@@ -695,12 +747,29 @@
                             </execution>
                         </executions>
                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>javadocs</id>
+            <activation>
+                <property>
+                    <name>skipDocs</name>
+                    <value>!true</value>
+                </property>
+                <file>
+                    <exists>src/main/java</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>copy-licenses</id>
+                                <id>copy-licenses-main-javadocs</id>
                                 <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
@@ -722,15 +791,67 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <configuration>
-                            <bottom>
-                                <![CDATA[
-                            Copyright &#169; ${inceptionYear} &#x2013; {currentYear} {organizationName}. All rights reserved.
-                            <br>
-                            Use is subject to <a href="{@docRoot}/licenses/${spec.license}.html" target="_top">license terms</a>.
-                        ]]>
-                            </bottom>
-                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>javadocs-test</id>
+            <activation>
+                <property>
+                    <name>skipDocs</name>
+                    <value>!true</value>
+                </property>
+                <file>
+                    <exists>src/test/java</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-licenses-test-javadocs</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/testapidocs/licenses</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <include>**/${spec.license}*</include>
+                                            <directory>${project.build.directory}/licenses</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-test-javadocs</id>
+                                <goals>
+                                    <goal>test-jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
@@ -804,7 +925,7 @@
 
         <!-- Add a tck empty marked file, so this is only executed in the TCK module -->
         <profile>
-            <id>tck-license</id>
+            <id>tck</id>
             <activation>
                 <property>
                     <name>release.revision</name>
@@ -818,35 +939,11 @@
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-dependency-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>unpack</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>unpack</goal>
-                                </goals>
-                                <configuration>
-                                    <artifactItems>
-                                        <artifactItem>
-                                            <groupId>org.eclipse.microprofile</groupId>
-                                            <artifactId>build-tools</artifactId>
-                                            <version>${version.microprofile.build-tools}</version>
-                                            <overWrite>true</overWrite>
-                                            <outputDirectory>${project.build.directory}</outputDirectory>
-                                            <includes>licenses/*</includes>
-                                        </artifactItem>
-                                    </artifactItems>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-resources-plugin</artifactId>
                         <executions>
+                            <!-- Copy License to main javadocs -->
                             <execution>
-                                <id>copy-licenses</id>
+                                <id>copy-licenses-main-javadocs</id>
                                 <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
@@ -863,23 +960,87 @@
                                     </resources>
                                 </configuration>
                             </execution>
+                            <!-- Copy License to test javadocs -->
+                            <execution>
+                                <id>copy-licenses-test-javadocs</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/testapidocs/licenses</outputDirectory>
+                                    <overwrite>true</overwrite>
+                                    <resources>
+                                        <resource>
+                                            <include>**/${tck.license}*</include>
+                                            <directory>${project.build.directory}/licenses</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
                         </executions>
                     </plugin>
+                    <!-- Replace License with EF -->
                     <plugin>
                         <groupId>com.coderplus.maven.plugins</groupId>
                         <artifactId>copy-rename-maven-plugin</artifactId>
                         <version>${version.plugin.copy.rename}</version>
                         <executions>
+                            <!-- Copy and Rename License to sources jar -->
                             <execution>
-                                <id>copy-file</id>
+                                <id>copy-license-main-sources</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <sourceFile>${project.build.directory}/licenses/${tck.license}</sourceFile>
+                                    <destinationFile>${project.build.directory}/sources/META-INF/LICENSE</destinationFile>
+                                </configuration>
+                            </execution>
+                            <!-- Copy and Rename License to main jar -->
+                            <execution>
+                                <id>copy-license-main</id>
                                 <phase>prepare-package</phase>
                                 <goals>
                                     <goal>copy</goal>
                                 </goals>
                                 <configuration>
-                                    <!--suppress UnresolvedMavenProperty - Generated by build-helper-maven-plugin -->
                                     <sourceFile>${project.build.directory}/licenses/${tck.license}</sourceFile>
                                     <destinationFile>${project.build.directory}/classes/META-INF/LICENSE</destinationFile>
+                                </configuration>
+                            </execution>
+                            <!-- Copy and Rename License to test jar -->
+                            <execution>
+                                <id>copy-license-test</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>copy</goal>
+                                </goals>
+                                <configuration>
+                                    <sourceFile>${project.build.directory}/licenses/${tck.license}</sourceFile>
+                                    <destinationFile>${project.build.directory}/test-classes/META-INF/LICENSE</destinationFile>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Atach License to sources -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-license-source</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>add-source</goal>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>${project.build.directory}/sources/</source>
+                                    </sources>
                                 </configuration>
                             </execution>
                         </executions>
@@ -893,6 +1054,7 @@
                             </excludes>
                         </configuration>
                     </plugin>
+                    <!-- To override tck license -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
