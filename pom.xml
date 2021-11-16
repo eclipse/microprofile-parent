@@ -987,18 +987,6 @@
                         <artifactId>copy-rename-maven-plugin</artifactId>
                         <version>${version.plugin.copy.rename}</version>
                         <executions>
-                            <!-- Copy and Rename License to sources jar -->
-                            <execution>
-                                <id>copy-license-main-sources</id>
-                                <phase>process-sources</phase>
-                                <goals>
-                                    <goal>copy</goal>
-                                </goals>
-                                <configuration>
-                                    <sourceFile>${project.build.directory}/licenses/${tck.license}</sourceFile>
-                                    <destinationFile>${project.build.directory}/sources/META-INF/LICENSE</destinationFile>
-                                </configuration>
-                            </execution>
                             <!-- Copy and Rename License to main jar -->
                             <execution>
                                 <id>copy-license-main</id>
@@ -1021,26 +1009,6 @@
                                 <configuration>
                                     <sourceFile>${project.build.directory}/licenses/${tck.license}</sourceFile>
                                     <destinationFile>${project.build.directory}/test-classes/META-INF/LICENSE</destinationFile>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- Atach License to sources -->
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>build-helper-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>attach-license-source</id>
-                                <phase>process-sources</phase>
-                                <goals>
-                                    <goal>add-source</goal>
-                                    <goal>add-test-source</goal>
-                                </goals>
-                                <configuration>
-                                    <sources>
-                                        <source>${project.build.directory}/sources/</source>
-                                    </sources>
                                 </configuration>
                             </execution>
                         </executions>
