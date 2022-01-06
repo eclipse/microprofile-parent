@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2017 Contributors to the Eclipse Foundation
+  ~ Copyright (c) 2017, 2022 Contributors to the Eclipse Foundation
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -288,6 +288,8 @@
                             <exclude>src/main/javadoc/**</exclude>
                             <exclude>src/main/asciidoc/license*</exclude>
                             <exclude>**/LICENSE*</exclude>
+                            <exclude>**/*.svg</exclude>
+                            <exclude>**/*.json</exclude>
                         </excludes>
                     </configuration>
                     <executions>
