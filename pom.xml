@@ -32,8 +32,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Compiler -->
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <java.release>8</java.release>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <!-- Dependencies - Jakarta -->
         <version.jakarta.annotation>2.0.0</version.jakarta.annotation>
@@ -50,6 +52,7 @@
         <!-- Plugins -->
         <version.microprofile.build-tools>1.1</version.microprofile.build-tools>
 
+        <version.plugin.compiler>3.10.1</version.plugin.compiler>
         <version.plugin.resources>3.2.0</version.plugin.resources>
         <version.plugin.jar>3.2.0</version.plugin.jar>
         <version.plugin.dependency>3.1.2</version.plugin.dependency>
@@ -210,6 +213,11 @@
     <build>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${version.plugin.compiler}</version>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -1097,6 +1105,16 @@
             <properties>
                 <spec.license>efsl-1.0</spec.license>
                 <tck.license>eftckl-1.0</tck.license>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>java-release</id>
+            <activation>
+                <jdk>[9,)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>${java.release}</maven.compiler.release>
             </properties>
         </profile>
     </profiles>
