@@ -19,8 +19,7 @@
 
     <groupId>org.eclipse.microprofile</groupId>
     <artifactId>microprofile-parent</artifactId>
-    <version>2.7-SNAPSHOT</version>
-
+    <version>2.6-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>MicroProfile Parent POM</name>
     <description>MicroProfile Parent POM</description>
