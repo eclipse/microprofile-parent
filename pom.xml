@@ -23,7 +23,7 @@
 
     <packaging>pom</packaging>
     <name>MicroProfile Parent POM</name>
-    <description>MicroProfile Parent POM</description>
+    <description>MicroProfile Parent POM. This pom aligns with Jakarta EE 10 Core Profile and Java 11. Using this parent POM requires building with at least JDK 11.</description>
     <url>http://microprofile.io</url>
 
     <properties>
@@ -32,10 +32,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Compiler -->
-        <java.version>1.8</java.version>
-        <java.release>8</java.release>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <java.release>11</java.release>
+        <maven.compiler.release>${java.release}</maven.compiler.release>
 
         <!-- Dependencies - Jakarta -->
         <version.jakartaee.coreprofile>10.0.0</version.jakartaee.coreprofile>
@@ -1031,16 +1029,6 @@
             <properties>
                 <spec.license>efsl-1.0</spec.license>
                 <tck.license>eftckl-1.0</tck.license>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>java-release</id>
-            <activation>
-                <jdk>[9,)</jdk>
-            </activation>
-            <properties>
-                <maven.compiler.release>${java.release}</maven.compiler.release>
             </properties>
         </profile>
     </profiles>
