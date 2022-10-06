@@ -41,17 +41,19 @@
         <!-- Plugins -->
         <version.microprofile.build-tools>1.1</version.microprofile.build-tools>
 
+        <!-- Maven 3.8.6 default build plugin versions -->
         <version.plugin.compiler>3.10.1</version.plugin.compiler>
-        <version.plugin.resources>3.2.0</version.plugin.resources>
-        <version.plugin.jar>3.2.0</version.plugin.jar>
-        <version.plugin.dependency>3.1.2</version.plugin.dependency>
-        <version.plugin.source>3.2.0</version.plugin.source>
-        <version.plugin.javadoc>3.2.0</version.plugin.javadoc>
+        <version.plugin.resources>3.3.0</version.plugin.resources>
+        <version.plugin.jar>3.3.0</version.plugin.jar>
+        <version.plugin.dependency>3.3.0</version.plugin.dependency>
+        <version.plugin.source>3.2.1</version.plugin.source>
+        <version.plugin.javadoc>3.4.1</version.plugin.javadoc>
 
         <version.plugin.helper>3.2.0</version.plugin.helper>
         <version.plugin.impsort>1.4.1</version.plugin.impsort>
         <version.plugin.formatter>2.13.0</version.plugin.formatter>
-        <version.plugin.checkstyle>3.1.1</version.plugin.checkstyle>
+        <!-- Maven 3.8.6 default quality plugin version -->
+        <version.plugin.checkstyle>3.2.0</version.plugin.checkstyle>
         <version.plugin.rat>0.13</version.plugin.rat>
         <version.plugin.bnd>5.2.0</version.plugin.bnd>
         <version.plugin.asciidoctor>2.1.0</version.plugin.asciidoctor>
