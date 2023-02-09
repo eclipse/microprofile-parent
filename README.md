@@ -31,7 +31,7 @@ Checkstyle validation. Always on by default, can be disabled with `-DskipChecks`
 
 - Automatically generate the Javadocs. Always on by default, can be skipped with `-DskipDocs`
 
-- Automatically generate `pdf` and `html` files from the `src/main/asciidoc` folder.
+- Automatically generate `pdf` and `html` files from the `src/main/asciidoc` folder, including AsciiDoctor Diagram support.
 
 - Apply the BND configuration if a `bnd.bnd` exists in the root project.
 
