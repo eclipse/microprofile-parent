@@ -55,8 +55,11 @@
         <version.plugin.checkstyle>3.2.1</version.plugin.checkstyle>
         <version.plugin.rat>0.15</version.plugin.rat>
         <version.plugin.bnd>6.4.0</version.plugin.bnd>
-        <version.plugin.asciidoctor>2.2.2</version.plugin.asciidoctor>
-        <version.plugin.asciidoctor.pdf>2.3.4</version.plugin.asciidoctor.pdf>
+        
+        <!-- AsciiDoctor support versions -->
+        <asciidoctor.maven.plugin.version>2.2.2</asciidoctor.maven.plugin.version>
+        <asciidoctorj.pdf.version>2.3.4</asciidoctorj.pdf.version>
+        
         <version.plugin.copy.rename>1.0.1</version.plugin.copy.rename>
         <version.plugin.release>3.0.0-M7</version.plugin.release>
         <version.plugin.gpg>3.0.1</version.plugin.gpg>
@@ -408,7 +411,7 @@
                 <plugin>
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
-                    <version>${version.plugin.asciidoctor}</version>
+                    <version>${asciidoctor.maven.plugin.version}</version>
                     <configuration>
                         <sourceDocumentName>${project.artifactId}.asciidoc</sourceDocumentName>
                         <attributes>
@@ -447,7 +450,7 @@
                         <dependency>
                             <groupId>org.asciidoctor</groupId>
                             <artifactId>asciidoctorj-pdf</artifactId>
-                            <version>${version.plugin.asciidoctor.pdf}</version>
+                            <version>${asciidoctorj.pdf.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
