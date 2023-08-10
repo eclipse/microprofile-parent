@@ -36,8 +36,11 @@
         <maven.compiler.release>${java.release}</maven.compiler.release>
 
         <!-- Dependencies - Jakarta -->
-        <version.jakartaee.coreprofile>10.0.0</version.jakartaee.coreprofile>
-
+         <version.jakarta.jsonp>2.1.0</version.jakarta.jsonp>
+         <version.jakarta.jsonb>3.0.0</version.jakarta.jsonb>
+         <version.jakarta.annotation>2.1.1</version.jakarta.annotation>
+         <version.jakarta.cdi>4.0.1</version.jakarta.cdi>
+         <version.jakarta.ws-rs>3.1.0</version.jakarta.ws-rs>
         <!-- Plugins -->
         <version.microprofile.build-tools>1.1</version.microprofile.build-tools>
 
@@ -132,9 +135,47 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-               <groupId>jakarta.platform</groupId>
-                <artifactId>jakarta.jakartaee-core-api</artifactId>
-                <version>${version.jakartaee.coreprofile}</version>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>${version.jakarta.annotation}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.enterprise</groupId>
+                <artifactId>jakarta.enterprise.cdi-api</artifactId>
+                <version>${version.jakarta.cdi}</version>
+                <scope>provided</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>jakarta.el</groupId>
+                        <artifactId>jakarta.el-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>jakarta.ejb</groupId>
+                        <artifactId>jakarta.ejb-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
+                <version>${version.jakarta.ws-rs}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.json</groupId>
+                <artifactId>jakarta.json-api</artifactId>
+                <version>${version.jakarta.jsonp}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.json.bind</groupId>
+                <artifactId>jakarta.json.bind-api</artifactId>
+                <version>${version.jakarta.jsonb}</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
