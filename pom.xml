@@ -62,8 +62,8 @@
         <!-- Asciidoctor support versions -->
         <asciidoctor.maven.plugin.version>2.2.4</asciidoctor.maven.plugin.version>
         <asciidoctorj.version>2.5.10</asciidoctorj.version>
-        <asciidoctorj.pdf.version>2.3.7</asciidoctorj.pdf.version>
-        <jruby.version>9.4.2.0</jruby.version>
+        <asciidoctorj.pdf.version>2.3.9</asciidoctorj.pdf.version>
+        <jruby.version>9.4.3.0</jruby.version>
         
         <version.plugin.copy.rename>1.0.1</version.plugin.copy.rename>
         <version.plugin.release>3.0.0-M7</version.plugin.release>
