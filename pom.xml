@@ -42,7 +42,7 @@
          <version.jakarta.cdi>4.0.1</version.jakarta.cdi>
          <version.jakarta.ws-rs>3.1.0</version.jakarta.ws-rs>
         <!-- Plugins -->
-        <version.microprofile.build-tools>1.1</version.microprofile.build-tools>
+        <version.microprofile.build-tools>1.2</version.microprofile.build-tools>
 
         <version.plugin.compiler>3.10.1</version.plugin.compiler>
         <version.plugin.resources>3.3.0</version.plugin.resources>
@@ -58,13 +58,13 @@
         <version.plugin.checkstyle>3.2.1</version.plugin.checkstyle>
         <version.plugin.rat>0.15</version.plugin.rat>
         <version.plugin.bnd>6.4.0</version.plugin.bnd>
-        
+
         <!-- Asciidoctor support versions -->
         <asciidoctor.maven.plugin.version>2.2.4</asciidoctor.maven.plugin.version>
         <asciidoctorj.version>2.5.10</asciidoctorj.version>
         <asciidoctorj.pdf.version>2.3.7</asciidoctorj.pdf.version>
         <jruby.version>9.4.2.0</jruby.version>
-        
+
         <version.plugin.copy.rename>1.0.1</version.plugin.copy.rename>
         <version.plugin.release>3.0.0-M7</version.plugin.release>
         <version.plugin.gpg>3.0.1</version.plugin.gpg>
@@ -510,7 +510,7 @@
                             </configuration>
                         </execution>
                     </executions>
-                </plugin> 
+                </plugin>
                 <!-- Release -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1086,11 +1086,11 @@
                 </property>
             </activation>
             <properties>
-                <spec.license>efsl-1.0</spec.license>
-                <tck.license>eftckl-1.0</tck.license>
+                <spec.license>efsl-1.1</spec.license>
+                <tck.license>eftckl-1.1</tck.license>
             </properties>
         </profile>
-        
+
         <!--SBOM-->
         <profile>
             <!-- Generates SBOM. Skip with '-DskipSBOM'.-->
