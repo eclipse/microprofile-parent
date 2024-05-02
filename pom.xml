@@ -349,7 +349,9 @@
                                     <property name="fileExtensions" value="java" />
                                 </module>
                                 <module name="FileTabCharacter" />
+                                <module name="SuppressWarningsFilter" />
                                 <module name="TreeWalker">
+                                    <module name="SuppressWarningsHolder" />
                                     <module name="ConstantName">
                                         <property name="format" value="^(([A-Z][A-Z0-9]*(_[A-Z0-9]+)*))$" />
                                     </module>
