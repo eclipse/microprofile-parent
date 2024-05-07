@@ -1107,6 +1107,7 @@
                         <plugin>
                             <groupId>org.cyclonedx</groupId>
                             <artifactId>cyclonedx-maven-plugin</artifactId>
+                            <version>${version.plugin.cyclonedx}</version>
                             <configuration>
                                 <schemaVersion>1.4</schemaVersion>
                                 <projectType>library</projectType>
