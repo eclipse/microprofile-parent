@@ -45,7 +45,7 @@
         <version.jakarta.jsonb>2.0.0</version.jakarta.jsonb>
 
         <!-- Plugins -->
-        <version.microprofile.build-tools>1.1</version.microprofile.build-tools>
+        <version.microprofile.build-tools>1.2</version.microprofile.build-tools>
 
         <version.plugin.compiler>3.10.1</version.plugin.compiler>
         <version.plugin.resources>3.2.0</version.plugin.resources>
@@ -67,6 +67,8 @@
         <version.plugin.release>3.0.0-M7</version.plugin.release>
         <version.plugin.gpg>3.0.1</version.plugin.gpg>
         <version.plugin.staging>1.6.13</version.plugin.staging>
+        <!--SBOM generation -->
+        <version.plugin.cyclonedx>2.7.9</version.plugin.cyclonedx>
 
         <!-- General Properties -->
         <skipChecks>false</skipChecks>
@@ -1078,7 +1080,7 @@
                 <tck.license>eftckl-1.0</tck.license>
             </properties>
         </profile>
-
+        
         <profile>
             <id>java-release</id>
             <activation>
@@ -1088,6 +1090,38 @@
                 <maven.compiler.release>${java.release}</maven.compiler.release>
             </properties>
         </profile>
+
+        <!--SBOM-->
+        <profile>
+            <!-- Generates SBOM. Skip with '-DskipSBOM'.-->
+                <id>sbom</id>
+                <activation>
+                  <property>
+                    <name>!skipSBOM</name>
+                  </property>
+                </activation>
+                <build>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.cyclonedx</groupId>
+                            <artifactId>cyclonedx-maven-plugin</artifactId>
+                            <version>${version.plugin.cyclonedx}</version>
+                            <configuration>
+                                <schemaVersion>1.4</schemaVersion>
+                                <projectType>library</projectType>
+                            </configuration>
+                            <executions>
+                                <execution>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>makeAggregateBom</goal>
+                                    </goals>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </build>
+            </profile>
     </profiles>
 
     <modules>
