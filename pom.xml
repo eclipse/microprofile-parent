@@ -46,29 +46,28 @@
 
         <!-- Plugins -->
         <version.microprofile.build-tools>1.2</version.microprofile.build-tools>
+        <version.plugin.compiler>3.13.0</version.plugin.compiler>
+        <version.plugin.resources>3.3.1</version.plugin.resources>
+        <version.plugin.jar>3.4.1</version.plugin.jar>
+        <version.plugin.dependency>3.7.0</version.plugin.dependency>
+        <version.plugin.source>3.3.1</version.plugin.source>
+        <version.plugin.javadoc>3.7.0</version.plugin.javadoc>
+        <version.plugin.helper>3.6.0</version.plugin.helper>
+        <version.plugin.impsort>1.10.0</version.plugin.impsort>
+        <version.plugin.formatter>2.24.1</version.plugin.formatter>
+        <version.plugin.checkstyle>3.4.0</version.plugin.checkstyle>
+        <version.plugin.rat>0.16.1</version.plugin.rat>
+        <version.plugin.bnd>7.0.0</version.plugin.bnd>
 
-        <version.plugin.compiler>3.10.1</version.plugin.compiler>
-        <version.plugin.resources>3.2.0</version.plugin.resources>
-        <version.plugin.jar>3.2.0</version.plugin.jar>
-        <version.plugin.dependency>3.1.2</version.plugin.dependency>
-        <version.plugin.source>3.2.0</version.plugin.source>
-        <version.plugin.javadoc>3.2.0</version.plugin.javadoc>
-
-        <version.plugin.helper>3.3.0</version.plugin.helper>
-        <version.plugin.impsort>1.8.0</version.plugin.impsort>
-        <version.plugin.formatter>2.22.0</version.plugin.formatter>
-
-        <version.plugin.checkstyle>3.2.1</version.plugin.checkstyle>
-        <version.plugin.rat>0.15</version.plugin.rat>
-        <version.plugin.bnd>6.4.0</version.plugin.bnd>
-        <version.plugin.asciidoctor>2.2.2</version.plugin.asciidoctor>
-        <version.plugin.asciidoctor.pdf>2.3.4</version.plugin.asciidoctor.pdf>
+        <!-- Asciidoctor support versions -->
+        <asciidoctor.maven.plugin.version>2.2.6</asciidoctor.maven.plugin.version>
+        <asciidoctorj.pdf.version>2.3.17</asciidoctorj.pdf.version>
         <version.plugin.copy.rename>1.0.1</version.plugin.copy.rename>
-        <version.plugin.release>3.0.0-M7</version.plugin.release>
-        <version.plugin.gpg>3.0.1</version.plugin.gpg>
-        <version.plugin.staging>1.6.13</version.plugin.staging>
+        <version.plugin.release>3.0.1</version.plugin.release>
+        <version.plugin.gpg>3.2.4</version.plugin.gpg>
+        <version.plugin.staging>1.7.0</version.plugin.staging>
         <!--SBOM generation -->
-        <version.plugin.cyclonedx>2.7.9</version.plugin.cyclonedx>
+        <version.plugin.cyclonedx>2.8.0</version.plugin.cyclonedx>
 
         <!-- General Properties -->
         <skipChecks>false</skipChecks>
@@ -456,7 +455,7 @@
                 <plugin>
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
-                    <version>${version.plugin.asciidoctor}</version>
+                    <version>${asciidoctor.maven.plugin.version}</version>
                     <configuration>
                         <sourceDocumentName>${project.artifactId}.asciidoc</sourceDocumentName>
                         <attributes>
@@ -495,7 +494,7 @@
                         <dependency>
                             <groupId>org.asciidoctor</groupId>
                             <artifactId>asciidoctorj-pdf</artifactId>
-                            <version>${version.plugin.asciidoctor.pdf}</version>
+                            <version>${asciidoctorj.pdf.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
